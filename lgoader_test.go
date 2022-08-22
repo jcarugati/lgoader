@@ -20,6 +20,7 @@ var srv = helpers.HttpMock(url, http.StatusOK, "")
 func TestNewStage(t *testing.T) {
 	a := assert.New(t)
 
+	// Create stages
 	stage0 := NewStage(&StageCfg{
 		Name:              "test0",
 		SequenceGenerator: makeSequence,
@@ -39,7 +40,7 @@ func TestNewStage(t *testing.T) {
 		Capacity:          1000,
 		RequestInterval:   0,
 		SequenceInterval:  0,
-		LoadTime:          2 * time.Second,
+		LoadTime:          10 * time.Second,
 		Results:           nil,
 		Done:              nil,
 	})
@@ -51,11 +52,12 @@ func TestNewStage(t *testing.T) {
 		Capacity:          1000,
 		RequestInterval:   0,
 		SequenceInterval:  0,
-		LoadTime:          3 * time.Second,
+		LoadTime:          1200 * time.Second,
 		Results:           nil,
 		Done:              nil,
 	})
 
+	// Generate Load Test and assign the stages that'll run
 	lt := NewLoadTest(5*time.Second, stage0, stage1, stage2)
 
 	resultChan := lt.Load()
@@ -84,6 +86,7 @@ loop:
 	}
 }
 
+// Generate the sequence generator Logic
 func makeSequence() RequestSequence {
 	generated := RequestSequence{}
 
